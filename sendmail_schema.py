@@ -1,6 +1,6 @@
 import graphene
 
-import mailchimp
+import gmail
 
 class Query(graphene.ObjectType):
     hello = graphene.String(argument=graphene.String(default_value="stranger"))
@@ -16,10 +16,11 @@ class SendMail(graphene.Mutation):
         body = graphene.String()
 
     ok = graphene.Boolean()
+    msg = graphene.String()
 
     def mutate(self, info, recipient, subject, body):
-        ok = mailchimp.send_mail(recipient, subject, body)
-        return SendMail(ok=ok)
+        result = gmail.send_mail(recipient, subject, body)
+        return SendMail(ok=result["ok"], msg=result["msg"])
 
 
 class Mutations(graphene.ObjectType):
