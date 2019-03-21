@@ -2,13 +2,14 @@
 
 import smtplib, ssl
 
-import gmail_account_details
+import config
 
 port = 465  # For SSL
+fromAddr = config.gmail_email
 
 
 def send_mail(recip, subj, body):
-    message = 'Subject: {}\n\n{}'.format(subj, body)
+    message = 'To: {}\nFrom: {}\nSubject: {}\n\n{}'.format(recip, fromAddr, subj, body)
 
     # Create a secure SSL context
     context = ssl.create_default_context()
@@ -16,8 +17,8 @@ def send_mail(recip, subj, body):
 
     try:
         with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
-            server.login(gmail_account_details.email, gmail_account_details.password)
-            server.sendmail(gmail_account_details.email, recip, message)
+            server.login(config.gmail_email, config.gmail_password)
+            server.sendmail(fromAddr, recip, message)
             return {
                 "ok": True,
                 "msg": "Successful!"

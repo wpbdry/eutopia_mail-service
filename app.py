@@ -3,6 +3,7 @@ from flask_graphql import GraphQLView
 from flask_cors import CORS
 
 import sendmail_schema as sendmail
+import config
 
 app = Flask(__name__)
 CORS(app)
@@ -18,4 +19,7 @@ app.add_url_rule(
 )
 
 if __name__ == '__main__':
-    app.run()
+    app.run(
+        host=config.flask_host,
+        port=config.flask_port
+    )
