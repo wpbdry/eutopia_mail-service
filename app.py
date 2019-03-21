@@ -2,7 +2,7 @@ from flask import Flask
 from flask_graphql import GraphQLView
 from flask_cors import CORS
 
-import schema
+import sendmail_schema as sendmail
 
 app = Flask(__name__)
 CORS(app)
@@ -12,7 +12,7 @@ app.add_url_rule(
     '/send-mail',
     view_func=GraphQLView.as_view(
         'graphql',
-        schema=schema.schema,
+        schema=sendmail.schema,
         graphiql=True, # GraphiQL interface
     )
 )
