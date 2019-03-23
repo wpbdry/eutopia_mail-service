@@ -1,7 +1,9 @@
 import graphene
+import graphql
 
 import gmail
 import secret
+
 
 class Query(graphene.ObjectType):
     hello = graphene.String(argument=graphene.String(default_value="stranger"))
@@ -17,15 +19,16 @@ class SendMail(graphene.Mutation):
         body = graphene.String()
         password = graphene.String()
 
-    ok = graphene.Boolean()
+    exitcode = graphene.Int()
     msg = graphene.String()
 
     def mutate(self, info, recipient, subject, body, password):
-        if password == secret.mail_service_password:  # Check password
-            result = gmail.send_mail(recipient, subject, body)
-            return SendMail(ok=result["ok"], msg=result["msg"])
-        else:
-            return SendMail(ok=False, msg="Authentication error")
+        if password != secret.mail_service_password:  # Check password
+            return SendMail(exitcode=2, msg="authentication error")
+        result = gmail.send_mail(recipient, subject, body)
+        if result["exitcode"] == 0:
+            return SendMail(exitcode=0)
+        return SendMail(exitcode=3, msg=result["msg"])
 
 
 class Mutations(graphene.ObjectType):

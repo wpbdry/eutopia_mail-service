@@ -20,11 +20,11 @@ def send_mail(recip, subj, body):
             server.login(config.gmail_email, config.gmail_password)
             server.sendmail(fromAddr, recip, message)
             return {
-                "ok": True,
-                "msg": "Successful!"
+                "exitcode": 0
             }
     except Exception as e:
+        print(e)
         return {
-            "ok": False,
+            "exitcode": 1,
             "msg": str(e)
         }
