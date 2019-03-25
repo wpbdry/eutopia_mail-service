@@ -1,7 +1,7 @@
 from secret import gmail_password_eutopiaplatform as gmail_password
 
 flask_host = "0.0.0.0"
-flask_port = 80
+flask_port = 443
 
 gmail_email = "eutopiaplatform@gmail.com"
 gmail_password = gmail_password
